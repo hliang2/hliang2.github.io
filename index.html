@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>YOUR NAME · Computer Science PhD</title>
+    <meta name="description" content="YOUR SHORT TAGLINE — research, publications, projects." />
+
+    <!-- Minimal, elegant CSS framework (free) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@latest/css/pico.min.css">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide-static@latest/font/lucide.css">
+
+    <style>
+      :root {
+        --brand: rgb(68, 102, 241);
+        --brand-2: rgb(164, 80, 255);
+      }
+
+      /* Layout tweaks */
+      header.hero {
+        padding: 4rem 0 3rem 0;
+        background: radial-gradient(80rem 40rem at 80% -10%, rgba(164,80,255,0.25), transparent),
+                    radial-gradient(80rem 40rem at -10% 10%, rgba(68,102,241,0.25), transparent);
+        border-bottom: 1px solid rgba(127,127,127,0.15);
+        margin-bottom: 2rem;
+      }
+      .avatar {
+        width: 120px; height: 120px; border-radius: 50%;
+        object-fit: cover; border: 2px solid rgba(127,127,127,0.25);
+      }
+      .chip {
+        display:inline-block; padding:.3rem .6rem; border-radius:999px;
+        border:1px solid rgba(127,127,127,0.25); font-size:.85rem; margin:.125rem;
+      }
+      .grid-3 { 
+        display: grid; 
+        gap: 1rem; 
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); 
+      }
+      .card { border:1px solid rgba(127,127,127,0.15); border-radius:12px; padding:1rem; }
+      footer { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(127,127,127,0.15);}
+      .muted { opacity: .8; }
+      .nowrap { white-space: nowrap; }
+
+      /* Dark mode friendly code blocks inside <details> */
+      pre { background: rgba(127,127,127,0.08); padding: .75rem; border-radius: .5rem; overflow:auto; }
+      
+      /* Hide when printing */
+      @media print { .no-print { display:none !important; } }
+    </style>
+  </head>
+  <body>
+    <header class="hero container">
+      <nav class="container-fluid">
+        <ul>
+          <li><strong>YOUR NAME</strong></li>
+        </ul>
+        <ul class="no-print">
+          <li><a href="#about">About</a></li>
+          <li><a href="#publications">Publications</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#teaching">Teaching</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li>
+            <button id="themeToggle" aria-label="Toggle theme">🌙</button>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="container">
+        <article>
+          <div style="display:flex; gap:1.25rem; align-items:center; flex-wrap:wrap;">
+            <img class="avatar" src="assets/avatar.jpg" alt="Your headshot" />
+            <div>
+              <h1 style="margin:0;">YOUR NAME</h1>
+              <p class="muted" style="margin:.25rem 0 0 0;">
+                Computer Science PhD · Research: Vision, Generative Models, 3DGS
+              </p>
+              <p style="margin:.5rem 0 0 0;">
+                <span class="chip">Machine Learning</span>
+                <span class="chip">Vision–Language</span>
+                <span class="chip">3D Gaussian Splatting</span>
+              </p>
+              <p style="margin:.75rem 0 0 0;">
+                <a role="button" href="assets/CV.pdf" class="contrast">Download CV</a>
+                <a role="button" href="#contact" class="secondary">Get in touch</a>
+              </p>
+            </div>
+          </div>
+        </article>
+      </div>
+    </header>
+
+    <main class="container">
+      <!-- About -->
+      <section id="about">
+        <h2>About</h2>
+        <p>
+          <!-- TODO: Replace this paragraph -->
+          I am a Computer Science PhD student at <em>Your University</em> advised by <em>Advisor</em>. 
+          My research focuses on <strong>generative modeling</strong>, <strong>3D reconstruction</strong>, 
+          and <strong>vision–language models</strong>. I like building practical systems that are 
+          simple, fast, and reliable.
+        </p>
+      </section>
+
+      <!-- Publications -->
+      <section id="publications">
+        <h2>Publications</h2>
+        <p class="muted">Selected works. Add or remove items freely.</p>
+        <ol>
+          <li>
+            <strong>Title of Your Paper</strong><br />
+            <em>Your Name</em>, Coauthor A, Coauthor B. <span class="muted">Conference '25</span><br />
+            <a href="#" class="secondary">PDF</a> · <a href="#" class="secondary">Code</a> · <a href="#" class="secondary">Project page</a>
+            <details>
+              <summary>BibTeX</summary>
+              <pre><code>@inproceedings{your2025paper,
+  title={Title of Your Paper},
+  author={Your Name and A. Coauthor and B. Coauthor},
+  booktitle={Proceedings of ...},
+  year={2025}
+}</code></pre>
+            </details>
+          </li>
+          <li>
+            <strong>Another Publication</strong><br />
+            <em>Your Name</em>, Collaborator C. <span class="muted">arXiv '24</span><br />
+            <a href="#" class="secondary">PDF</a> · <a href="#" class="secondary">Code</a>
+          </li>
+        </ol>
+      </section>
+
+      <!-- Projects -->
+      <section id="projects">
+        <h2>Projects</h2>
+        <div class="grid-3">
+          <article class="card">
+            <header><strong>Conditional Gaussian Splatting</strong></header>
+            <p>Feed‑forward, pose‑invariant single‑image → 3DGS with an MLP conditioned on FLAME parameters.</p>
+            <footer>
+              <a href="#" class="secondary"><i class="lucide lucide-github"></i> Code</a>
+              <a href="#" class="secondary"><i class="lucide lucide-globe"></i> Demo</a>
+            </footer>
+          </article>
+
+          <article class="card">
+            <header><strong>Diffusion‑Guided Editing</strong></header>
+            <p>Peer‑supervised diffusion to expose shortcut learning in medical classifiers via targeted edits.</p>
+            <footer>
+              <a href="#" class="secondary"><i class="lucide lucide-github"></i> Code</a>
+              <a href="#" class="secondary"><i class="lucide lucide-film"></i> Video</a>
+            </footer>
+          </article>
+
+          <article class="card">
+            <header><strong>VL‑Alignment Toolkit</strong></header>
+            <p>Utilities for aligning FLAME meshes to COLMAP and initializing 3D Gaussians from meshes.</p>
+            <footer>
+              <a href="#" class="secondary"><i class="lucide lucide-github"></i> Code</a>
+              <a href="#" class="secondary"><i class="lucide lucide-docs"></i> Docs</a>
+            </footer>
+          </article>
+        </div>
+      </section>
+
+      <!-- Teaching -->
+      <section id="teaching">
+        <h2>Teaching</h2>
+        <ul>
+          <li><strong>CS 567: Generative Models</strong>, TA · Fall 2025 — led 3 recitations and project reviews.</li>
+          <li><strong>CS 451: Computer Vision</strong>, TA · Spring 2025 — designed 2 new labs on 3DGS.</li>
+        </ul>
+      </section>
+
+      <!-- Contact -->
+      <section id="contact">
+        <h2>Contact</h2>
+        <p>
+          <i class="lucide lucide-mail"></i> <a href="mailto:you@university.edu">you@university.edu</a><br />
+          <i class="lucide lucide-map-pin"></i> City, State · <i class="lucide lucide-link"></i> <a href="https://github.com/YOUR_GH">github.com/YOUR_GH</a> ·
+          <a href="https://scholar.google.com/citations?user=YOURID">Google Scholar</a> ·
+          <a href="https://twitter.com/YOUR_HANDLE">Twitter</a>
+        </p>
+      </section>
+    </main>
+
+    <footer class="container">
+      <small class="muted">© 2025 YOUR NAME. Built free on GitHub Pages.</small>
+    </footer>
+
+    <script>
+      // Dark mode toggle with persistence
+      const root = document.documentElement;
+      const btn = document.getElementById('themeToggle');
+      const saved = localStorage.getItem('theme');
+      if (saved) root.setAttribute('data-theme', saved);
+      function setIcon() {
+        btn.textContent = (root.getAttribute('data-theme') === 'dark') ? '☀️' : '🌙';
+      }
+      setIcon();
+      btn.addEventListener('click', () => {
+        const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+        setIcon();
+      });
+    </script>
+  </body>
+</html>
