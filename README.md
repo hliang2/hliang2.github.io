@@ -1,4 +1,4 @@
-# PhD Website Starter (Free)
+# PhD Website
 
 This is a single-file, fancy personal website that you can host for **free** on GitHub Pages.
 
