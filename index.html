@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Hao Liang</title>
-    <meta name="description" content="YOUR SHORT TAGLINE — research, publications, projects." />
+    <meta name="description" content="ECE PhD Candidate — Computer Vision, Generative Models, 3DGS, Federated Learning." />
 
     <!-- Minimal, elegant CSS framework (free) -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@latest/css/pico.min.css">
@@ -44,11 +44,65 @@
       .muted { opacity: .8; }
       .nowrap { white-space: nowrap; }
 
+      /* Social links styling */
+      .social-links {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-top: 1rem;
+      }
+      
+      .social-links a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(127,127,127,0.1);
+        color: var(--color);
+        text-decoration: none;
+        transition: all 0.2s ease;
+        border: 1px solid rgba(127,127,127,0.2);
+      }
+      
+      .social-links a:hover {
+        background: var(--brand);
+        color: white;
+        transform: translateY(-2px);
+      }
+      
+      .social-links a i {
+        font-size: 18px;
+      }
+
       /* Dark mode friendly code blocks inside <details> */
       pre { background: rgba(127,127,127,0.08); padding: .75rem; border-radius: .5rem; overflow:auto; }
       
       /* Hide when printing */
       @media print { .no-print { display:none !important; } }
+      
+      /* Contact section simplified */
+      #contact {
+        background: rgba(127,127,127,0.05);
+        padding: 2rem;
+        border-radius: 12px;
+        text-align: center;
+      }
+      
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        .hero-content {
+          text-align: center;
+        }
+        
+        .hero-content > div {
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+        }
+      }
     </style>
   </head>
   <body>
@@ -60,7 +114,6 @@
         <ul class="no-print">
           <li><a href="#about">About</a></li>
           <li><a href="#publications">Publications</a></li>
-          <li><a href="#projects">Projects</a></li>
           <li><a href="#teaching">Teaching</a></li>
           <li><a href="#contact">Contact</a></li>
           <li>
@@ -69,17 +122,37 @@
         </ul>
       </nav>
 
-      <div class="container">
+      <div class="container hero-content">
         <article>
-          <div style="display:flex; gap:1.25rem; align-items:center; flex-wrap:wrap;">
-            <img class="avatar" src="assets/avatar.jpg" alt="Your headshot" />
-            <div>
+          <div style="display:flex; gap:1.5rem; align-items:center; flex-wrap:wrap;">
+            <img class="avatar" src="assets/avatar.jpg" alt="Hao Liang headshot" />
+            <div style="flex: 1;">
               <h1 style="margin:0;">Hao Liang</h1>
               <p class="muted" style="margin:.25rem 0 0 0;">
-                Electrical and Computer Engineering PhD Candidate · Research: Vision, Generative Models, 3DGS, Federated Learning
+                Electrical and Computer Engineering PhD Candidate<br>
+                <strong>Research:</strong> Computer Vision, Generative Models, 3DGS, Federated Learning
               </p>
-              <p style="margin:.75rem 0 0 0;">
-                <a role="button" href="assets/CV.pdf" class="contrast">Download CV</a>
+              
+              <!-- Social Links -->
+              <div class="social-links">
+                <a href="mailto:hl106@rice.edu" title="Email" aria-label="Email">
+                  <i class="lucide lucide-mail"></i>
+                </a>
+                <a href="https://github.com/hliang2" title="GitHub" aria-label="GitHub">
+                  <i class="lucide lucide-github"></i>
+                </a>
+                <a href="https://scholar.google.com/citations?user=9mdAaEEAAAAJ&hl=en" title="Google Scholar" aria-label="Google Scholar">
+                  <i class="lucide lucide-graduation-cap"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/hao-liang-5b5020198" title="LinkedIn" aria-label="LinkedIn">
+                  <i class="lucide lucide-linkedin"></i>
+                </a>
+                <a href="assets/CV.pdf" title="Download CV" aria-label="Download CV">
+                  <i class="lucide lucide-file-text"></i>
+                </a>
+              </div>
+              
+              <p style="margin:1.5rem 0 0 0;">
                 <a role="button" href="#contact" class="secondary">Get in touch</a>
               </p>
             </div>
@@ -93,9 +166,8 @@
       <section id="about">
         <h2>About</h2>
         <p>
-          <!-- TODO: Replace this paragraph -->
           I am an ECE PhD student at <em>Rice University</em> advised by <a href="https://www.guhabalakrishnan.com/">Professor Guha Balakrishnan</a>.
-          Before that, I spent 3 wonderful years at <em>Carnegie Mellon University</em>, where I was fortunate to work closely with <a href="https://www.andrew.cmu.edu/user/gaurij/">Professor Gauri Joshi</a> and <a href="https://engineering.cmu.edu/directory/bios/ramakrishnan-bhiksha-raj.html">Professor Bhiksha Raj</a>
+          Before that, I spent 3 wonderful years at <em>Carnegie Mellon University</em>, where I was fortunate to work closely with <a href="https://www.andrew.cmu.edu/user/gaurij/">Professor Gauri Joshi</a> and <a href="https://engineering.cmu.edu/directory/bios/ramakrishnan-bhiksha-raj.html">Professor Bhiksha Raj</a>.
           My research focuses on <strong>generative modeling</strong>, <strong>3D human reconstruction</strong>, 
           <strong>vision–language models</strong> and <strong>Federated Learning</strong>. I like building practical systems that are 
           simple, fast, fair and reliable.
@@ -120,17 +192,6 @@
             <strong>Benchmarking Algorithmic Bias in Face Recognition: An Experimental Approach Using Synthetic Faces and Human Evaluation</strong><br />
             <em>Hao Liang</em>, Pietro Perona, Guha Balakrishnan. <span class="muted">ICCV '23</span><br />
             <a href="https://openaccess.thecvf.com/content/ICCV2023/papers/Liang_Benchmarking_Algorithmic_Bias_in_Face_Recognition_An_Experimental_Approach_Using_ICCV_2023_paper.pdf" class="secondary">PDF</a> · <a href="https://hliang2.github.io/BenchmarkingReco/" class="secondary">Project page</a> · <a href="https://github.com/hliang2/BenchmarkingReco" class="secondary">Code</a> · <a href="https://rice.app.box.com/s/0t7dtfurh8jf80mhq3f7s8nbya2g58w9" class="secondary">Dataset</a>
-<!--             <details>
-              <summary>BibTeX</summary>
-              <pre><code>@inproceedings{liang2023benchmarking,
-  title={Benchmarking algorithmic bias in face recognition: An experimental approach using synthetic faces and human evaluation},
-  author={Liang, Hao and Perona, Pietro and Balakrishnan, Guha},
-  booktitle={Proceedings of the IEEE/CVF International Conference on Computer Vision},
-  pages={4977--4987},
-  year={2023}
-}
-}</code></pre>
-            </details> -->
           </li>
           <li>
             <strong>X-ray Recognition: Patient identification from X-rays using a contrastive objective</strong><br />
@@ -166,41 +227,9 @@
             <strong>Overlap local-SGD: An algorithmic approach to hide communication delays in distributed SGD</strong><br />
             Jianyu Wang,  <em>Hao Liang</em>, Gauri Joshi. <span class="muted">ICASSP '20</span><br />
             <a href="https://ieeexplore.ieee.org/abstract/document/9053834" class="secondary">PDF</a> 
+          </li>
         </ol>
       </section>
-      
-      <!-- Projects -->
-      <!-- <section id="projects">
-        <h2>Projects</h2>
-        <div class="grid-3">
-          <article class="card">
-            <header><strong>Conditional Gaussian Splatting</strong></header>
-            <p>Feed‑forward, pose‑invariant single‑image → 3DGS with an MLP conditioned on FLAME parameters.</p>
-            <footer>
-              <a href="#" class="secondary"><i class="lucide lucide-github"></i> Code</a>
-              <a href="#" class="secondary"><i class="lucide lucide-globe"></i> Demo</a>
-            </footer>
-          </article>
-
-          <article class="card">
-            <header><strong>Diffusion‑Guided Editing</strong></header>
-            <p>Peer‑supervised diffusion to expose shortcut learning in medical classifiers via targeted edits.</p>
-            <footer>
-              <a href="#" class="secondary"><i class="lucide lucide-github"></i> Code</a>
-              <a href="#" class="secondary"><i class="lucide lucide-film"></i> Video</a>
-            </footer>
-          </article>
-
-          <article class="card">
-            <header><strong>VL‑Alignment Toolkit</strong></header>
-            <p>Utilities for aligning FLAME meshes to COLMAP and initializing 3D Gaussians from meshes.</p>
-            <footer>
-              <a href="#" class="secondary"><i class="lucide lucide-github"></i> Code</a>
-              <a href="#" class="secondary"><i class="lucide lucide-docs"></i> Docs</a>
-            </footer>
-          </article>
-        </div>
-      </section> -->
 
       <!-- Teaching -->
       <section id="teaching">
@@ -214,18 +243,33 @@
 
       <!-- Contact -->
       <section id="contact">
-        <h2>Contact</h2>
-        <p>
-          <i class="lucide lucide-mail"></i> <a href="hl106@rice.edu">hl106@rice.edu</a><br />
-          <i class="lucide lucide-map-pin"></i> Houston, TX · <i class="lucide lucide-link"></i> <a href="https://github.com/hliang2">github.com/hliang2</a> ·
-          <a href="https://scholar.google.com/citations?user=9mdAaEEAAAAJ&hl=en">Google Scholar</a> ·
-          <a href="https://www.linkedin.com/in/hao-liang-5b5020198">LinkedIn</a>
+        <h2>Let's Connect</h2>
+        <p class="muted" style="margin-bottom: 1.5rem;">
+          Feel free to reach out for collaboration opportunities, research discussions, or just to say hello.
+        </p>
+        <div class="social-links" style="justify-content: center; gap: 1.5rem;">
+          <a href="mailto:hl106@rice.edu" title="Email" style="width: 50px; height: 50px;">
+            <i class="lucide lucide-mail" style="font-size: 22px;"></i>
+          </a>
+          <a href="https://github.com/hliang2" title="GitHub" style="width: 50px; height: 50px;">
+            <i class="lucide lucide-github" style="font-size: 22px;"></i>
+          </a>
+          <a href="https://scholar.google.com/citations?user=9mdAaEEAAAAJ&hl=en" title="Google Scholar" style="width: 50px; height: 50px;">
+            <i class="lucide lucide-graduation-cap" style="font-size: 22px;"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/hao-liang-5b5020198" title="LinkedIn" style="width: 50px; height: 50px;">
+            <i class="lucide lucide-linkedin" style="font-size: 22px;"></i>
+          </a>
+        </div>
+        <p class="muted" style="margin-top: 1rem;">
+          <i class="lucide lucide-map-pin" style="display: inline; margin-right: 0.5rem;"></i>
+          Houston, TX
         </p>
       </section>
     </main>
 
     <footer class="container">
-      <small class="muted">© 2025 Hao Liang Built free on GitHub Pages.</small>
+      <small class="muted">© 2025 Hao Liang · Built with Claude AI on GitHub Pages</small>
     </footer>
 
     <script>
