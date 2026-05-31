@@ -1,301 +1,644 @@
-<!doctype html>
-<html lang="en" data-theme="light">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Hao Liang</title>
-    <meta name="description" content="ECE PhD Candidate — 2D/3D Computer Vision, Generative Models, Digital Human, Federated Learning." />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hao Liang — 3D Vision & Digital Humans</title>
+<meta name="description" content="Hao Liang — ECE PhD Candidate at Rice University. 3D Gaussian Splatting, digital humans, generative modeling, vision–language models.">
 
-    <!-- Minimal, elegant CSS framework (free) -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@latest/css/pico.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Hanken+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-    <!-- Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+  :root{
+    --ink:#0b0c0f;
+    --ink-2:#101116;
+    --panel:#15161d;
+    --line:rgba(236,231,223,.12);
+    --line-soft:rgba(236,231,223,.07);
+    --text:#ece7df;
+    --muted:#9a988f;
+    --muted-2:#6c6b65;
+    --accent:#c6f24e;
+    --accent-dim:rgba(198,242,78,.16);
+    --serif:"Fraunces",Georgia,serif;
+    --sans:"Hanken Grotesk",system-ui,sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,monospace;
+    --maxw:1180px;
+  }
 
-    <style>
-      :root {
-        --brand: rgb(68, 102, 241);
-        --brand-2: rgb(164, 80, 255);
-      }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--ink);
+    color:var(--text);
+    font-family:var(--sans);
+    font-weight:400;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  /* subtle film grain + vignette atmosphere */
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:1;
+    background:
+      radial-gradient(120% 90% at 80% -10%, rgba(198,242,78,.06), transparent 55%),
+      radial-gradient(90% 70% at 0% 110%, rgba(120,160,255,.05), transparent 55%);
+    mix-blend-mode:screen;
+  }
+  body::after{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:2;opacity:.035;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
 
-      /* Layout tweaks */
-      header.hero {
-        padding: 4rem 0 3rem 0;
-        background: radial-gradient(80rem 40rem at 80% -10%, rgba(164,80,255,0.25), transparent),
-                    radial-gradient(80rem 40rem at -10% 10%, rgba(68,102,241,0.25), transparent);
-        border-bottom: 1px solid rgba(127,127,127,0.15);
-        margin-bottom: 2rem;
-      }
-      .avatar {
-        width: 120px; height: 120px; border-radius: 50%;
-        object-fit: cover; border: 2px solid rgba(127,127,127,0.25);
-      }
-      .chip {
-        display:inline-block; padding:.3rem .6rem; border-radius:999px;
-        border:1px solid rgba(127,127,127,0.25); font-size:.85rem; margin:.125rem;
-      }
-      .grid-3 { 
-        display: grid; 
-        gap: 1rem; 
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); 
-      }
-      .card { border:1px solid rgba(127,127,127,0.15); border-radius:12px; padding:1rem; }
-      footer { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(127,127,127,0.15);}
-      .muted { opacity: .8; }
-      .nowrap { white-space: nowrap; }
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 32px;position:relative;z-index:3}
 
-      /* Social links styling */
-      .social-links {
-        display: flex;
-        gap: 1rem;
-        align-items: center;
-        flex-wrap: wrap;
-        margin-top: 1rem;
-      }
-      
-      .social-links a {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background: rgba(127,127,127,0.1);
-        color: var(--color);
-        text-decoration: none;
-        transition: all 0.2s ease;
-        border: 1px solid rgba(127,127,127,0.2);
-      }
-      
-      .social-links a:hover {
-        background: var(--brand);
-        color: white;
-        transform: translateY(-2px);
-      }
-      
-      .social-links a i {
-        font-size: 18px;
-      }
+  /* ---------- NAV ---------- */
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:20px 32px;
+    backdrop-filter:blur(0px);
+    transition:background .4s ease, backdrop-filter .4s ease, border-color .4s ease, padding .4s ease;
+    border-bottom:1px solid transparent;
+  }
+  nav.scrolled{
+    background:rgba(11,12,15,.72);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line-soft);
+    padding:14px 32px;
+  }
+  .brand{
+    font-family:var(--mono);font-size:13px;letter-spacing:.04em;
+    display:flex;align-items:center;gap:9px;color:var(--text);
+  }
+  .brand .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent)}
+  .nav-links{display:flex;gap:30px;align-items:center}
+  .nav-links a{
+    font-size:13.5px;color:var(--muted);letter-spacing:.01em;position:relative;
+    transition:color .25s ease;
+  }
+  .nav-links a::after{
+    content:"";position:absolute;left:0;bottom:-5px;height:1px;width:0;background:var(--accent);
+    transition:width .3s ease;
+  }
+  .nav-links a:hover{color:var(--text)}
+  .nav-links a:hover::after{width:100%}
+  @media(max-width:760px){ .nav-links{display:none} }
 
-      /* Dark mode friendly code blocks inside <details> */
-      pre { background: rgba(127,127,127,0.08); padding: .75rem; border-radius: .5rem; overflow:auto; }
-      
-      /* Hide when printing */
-      @media print { .no-print { display:none !important; } }
-      
-      /* Contact section simplified */
-      #contact {
-        background: rgba(127,127,127,0.05);
-        padding: 2rem;
-        border-radius: 12px;
-        text-align: center;
-      }
-      
-      /* Responsive adjustments */
-      @media (max-width: 768px) {
-        .hero-content {
-          text-align: center;
-        }
-        
-        .hero-content > div {
-          flex-direction: column;
-          align-items: center;
-          text-align: center;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <header class="hero container">
-      <nav class="container-fluid">
-        <ul>
-          <li><strong>Hao Liang</strong></li>
-        </ul>
-        <ul class="no-print">
-          <li><a href="#about">About</a></li>
-          <li><a href="#publications">Publications</a></li>
-          <li><a href="#teaching">Teaching</a></li>
-          <li><a href="#contact">Contact</a></li>
-          <li>
-            <button id="themeToggle" aria-label="Toggle theme">🌙</button>
-          </li>
-        </ul>
-      </nav>
+  /* ---------- HERO ---------- */
+  header{
+    min-height:100svh;position:relative;display:flex;align-items:center;
+    padding-top:90px;overflow:hidden;
+  }
+  #cloud{
+    position:absolute;top:0;right:-6%;width:62%;height:100%;z-index:0;
+    opacity:.95;
+  }
+  @media(max-width:900px){
+    #cloud{width:100%;right:0;opacity:.34}
+  }
+  .hero-grid{position:relative;z-index:4;width:100%}
+  .eyebrow{
+    font-family:var(--mono);font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--accent);display:flex;align-items:center;gap:12px;margin-bottom:26px;
+  }
+  .eyebrow::before{content:"";width:34px;height:1px;background:var(--accent);opacity:.7}
+  h1.name{
+    font-family:var(--serif);font-weight:340;font-optical-sizing:auto;
+    font-size:clamp(56px,11vw,150px);line-height:.92;letter-spacing:-.02em;
+    margin-bottom:26px;
+  }
+  h1.name .it{font-style:italic;font-weight:300}
+  .tagline{
+    font-size:clamp(17px,2.1vw,22px);max-width:30ch;color:var(--text);
+    font-weight:300;line-height:1.45;
+  }
+  .tagline b{color:var(--text);font-weight:600}
+  .hero-meta{
+    margin-top:14px;font-family:var(--mono);font-size:13px;color:var(--muted);letter-spacing:.02em;
+  }
+  .cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:40px}
+  .btn{
+    font-size:14px;letter-spacing:.01em;padding:11px 20px;border-radius:100px;
+    border:1px solid var(--line);color:var(--text);
+    display:inline-flex;align-items:center;gap:9px;
+    transition:border-color .25s,background .25s,color .25s,transform .25s;
+  }
+  .btn svg{width:15px;height:15px;opacity:.85}
+  .btn:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px)}
+  .btn.solid{background:var(--accent);color:#0b0c0f;border-color:var(--accent);font-weight:600}
+  .btn.solid:hover{background:#d4f76a;color:#0b0c0f}
+  .scroll-hint{
+    position:absolute;bottom:30px;left:50%;transform:translateX(-50%);z-index:4;
+    font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--muted-2);
+    text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:8px;
+  }
+  .scroll-hint .ln{width:1px;height:34px;background:linear-gradient(var(--muted-2),transparent);animation:drop 2s infinite}
+  @keyframes drop{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
 
-      <div class="container hero-content">
-        <article>
-          <div style="display:flex; gap:1.5rem; align-items:center; flex-wrap:wrap;">
-            <img class="avatar" src="assets/avatar.jpg" alt="Hao Liang headshot" />
-            <div style="flex: 1;">
-              <h1 style="margin:0;">Hao Liang</h1>
-              <p class="muted" style="margin:.25rem 0 0 0;">
-                Electrical and Computer Engineering PhD Candidate<br>
-                <strong>Research:</strong> 2D/3D Computer Vision, Generative Models, Digital Human, Federated Learning
-              </p>
-              
-              <!-- Social Links -->
-              <div class="social-links">
-                <a href="mailto:hl106@rice.edu" title="Email" aria-label="Email">
-                  <i class="fas fa-envelope"></i>
-                </a>
-                <a href="https://github.com/hliang2" title="GitHub" aria-label="GitHub">
-                  <i class="fab fa-github"></i>
-                </a>
-                <a href="https://scholar.google.com/citations?user=9mdAaEEAAAAJ&hl=en" title="Google Scholar" aria-label="Google Scholar">
-                  <i class="fas fa-graduation-cap"></i>
-                </a>
-                <a href="https://www.linkedin.com/in/hao-liang-5b5020198" title="LinkedIn" aria-label="LinkedIn">
-                  <i class="fab fa-linkedin"></i>
-                </a>
-                <a href="assets/CV.pdf" title="Download CV" aria-label="Download CV">
-                  <i class="fas fa-file-alt"></i>
-                </a>
-              </div>
-              
-            </div>
-          </div>
-        </article>
-      </div>
-    </header>
+  /* ---------- SECTION SCAFFOLD ---------- */
+  section{padding:120px 0;position:relative}
+  .sec-head{
+    display:grid;grid-template-columns:240px 1fr;gap:40px;margin-bottom:64px;align-items:baseline;
+  }
+  @media(max-width:820px){ .sec-head{grid-template-columns:1fr;gap:14px;margin-bottom:44px} }
+  .sec-label{
+    font-family:var(--mono);font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-2);
+    display:flex;align-items:center;gap:12px;
+  }
+  .sec-label .num{color:var(--accent)}
+  .sec-title{
+    font-family:var(--serif);font-weight:360;font-size:clamp(30px,4.6vw,52px);line-height:1.04;letter-spacing:-.015em;
+  }
+  .sec-title .it{font-style:italic;font-weight:300}
 
-    <main class="container">
-      <!-- About -->
-      <section id="about">
-        <h2>About</h2>
-        <p>
-          I am an ECE PhD student at <em>Rice University</em> advised by <a href="https://www.guhabalakrishnan.com/">Professor Guha Balakrishnan</a>.
-          Before that, I spent 3 wonderful years at <em>Carnegie Mellon University</em>, where I was fortunate to work closely with <a href="https://www.andrew.cmu.edu/user/gaurij/">Professor Gauri Joshi</a>, <a href="https://engineering.cmu.edu/directory/bios/ramakrishnan-bhiksha-raj.html">Professor Bhiksha Raj</a> and <a href="https://gfanti.github.io/">Professor Giulia Fanti</a>. I did my undergrad at UESTC.
-          My research focuses on <strong>generative modeling</strong>, <strong>3D human reconstruction</strong>, 
-          <strong>vision–language models</strong> and <strong>Federated Learning</strong>. I like building practical systems that are 
-          simple, fast, fair and reliable. 
-          My research is supported by <a href="https://sra.samsung.com/">Samsung Research America</a>. I am currently a research intern with <a href="https://machinelearning.apple.com/">Apple</a> Digital Human Team.
-        </p>
-      </section>
+  /* ---------- ABOUT ---------- */
+  .about-grid{display:grid;grid-template-columns:1fr 320px;gap:64px;align-items:start}
+  @media(max-width:820px){ .about-grid{grid-template-columns:1fr;gap:40px} }
+  .bio p{font-size:clamp(17px,1.9vw,20px);font-weight:300;color:#d6d2ca;margin-bottom:20px;max-width:60ch}
+  .bio a{color:var(--text);border-bottom:1px solid var(--line);transition:color .2s,border-color .2s}
+  .bio a:hover{color:var(--accent);border-color:var(--accent)}
+  .about-side{position:sticky;top:110px}
+  .portrait{
+    width:100%;border-radius:14px;display:block;filter:grayscale(.25) contrast(1.02);
+    border:1px solid var(--line);
+  }
+  .affil{margin-top:24px;border-top:1px solid var(--line-soft);padding-top:20px}
+  .affil .k{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-2);margin-bottom:6px}
+  .affil .v{font-size:14.5px;color:var(--muted);margin-bottom:16px}
+  .affil .v b{color:var(--text);font-weight:600}
 
-      <!-- Publications -->
-      <section id="publications">
-        <h2>Publications</h2>
-        <ol>
-          <li>
-            <strong>Splatshot: 3D Face Avatar Generation from a Single Unconstrained Photo</strong><br />
-            <em>Hao Liang</em>, Zhixuan Ge, Soumendu Majee, Joanna Li, Ashok Veeraraghavan, Guha Balakrishnan. <span class="muted">In submission</span><br />
-            <a href="https://github.com/hliang2/SplatShot" class="secondary">Code</a>
-          </li>
-          <li>
-            <strong>CelebA-3D: A Large-Scale 3D In-the-Wild Face Dataset</strong><br />
-            <em>Hao Liang</em>, Guha Balakrishnan. <span class="muted">In submission</span><br />
-            <a href="https://github.com/hliang2/celeba-3d" class="secondary">Code</a> · <a href="https://hliang2.github.io/celeba-3d/" class="secondary">Project page</a> 
-          </li>
-          <li>
-            <strong>FastAvatar: Instant 3D Gaussian Splatting for Faces from Single Unconstrained Poses</strong><br />
-            <em>Hao Liang</em>, Zhixuan Ge, Ashish Tiwari, Soumendu Majee, G.M. Dilshan Godaliyadda, Ashok Veeraraghavan, Guha Balakrishnan. <span class="muted">In submission</span><br />
-            <a href="https://arxiv.org/pdf/2508.18389" class="secondary">PDF</a> · <a href="https://github.com/hliang2/FastAvatar" class="secondary">Code</a> · <a href="https://hliang2.github.io/FastAvatar/" class="secondary">Project page</a> · <a href="https://x.com/janusch_patas/status/1960589930620707201" class="secondary">Twitter</a> · <a href="https://zhuanlan.zhihu.com/p/1944046184273535746" class="secondary">Zhihu</a>
-          </li>
-          <li>
-            <strong>Linking convolutional kernel size to generalization bias in face analysis CNNs</strong><br />
-            <em>Hao Liang</em>, Josue Ortega Caro, Vikram Maheshri, Ankit B Patel, Guha Balakrishnan. <span class="muted">WACV '24</span><br />
-            <a href="https://openaccess.thecvf.com/content/WACV2024/papers/Liang_Linking_Convolutional_Kernel_Size_to_Generalization_Bias_in_Face_Analysis_WACV_2024_paper.pdf" class="secondary">PDF</a> 
-          </li>
-          <li>
-            <strong>Benchmarking Algorithmic Bias in Face Recognition: An Experimental Approach Using Synthetic Faces and Human Evaluation</strong><br />
-            <em>Hao Liang</em>, Pietro Perona, Guha Balakrishnan. <span class="muted">ICCV '23</span><br />
-            <a href="https://openaccess.thecvf.com/content/ICCV2023/papers/Liang_Benchmarking_Algorithmic_Bias_in_Face_Recognition_An_Experimental_Approach_Using_ICCV_2023_paper.pdf" class="secondary">PDF</a> · <a href="https://hliang2.github.io/BenchmarkingReco/" class="secondary">Project page</a> · <a href="https://github.com/hliang2/BenchmarkingReco" class="secondary">Code</a> · <a href="https://rice.app.box.com/s/0t7dtfurh8jf80mhq3f7s8nbya2g58w9" class="secondary">Dataset</a>
-          </li>
-          <li>
-            <strong>X-ray Recognition: Patient identification from X-rays using a contrastive objective</strong><br />
-            <em>Hao Liang</em>, Kevin Ni, Guha Balakrishnan. <span class="muted">arXiv '24</span><br />
-            <a href="https://arxiv.org/pdf/2305.00149" class="secondary">PDF</a>
-          </li>
-          <li>
-            <strong>Visualizing chest X-ray dataset biases using GANs</strong><br />
-            <em>Hao Liang</em>, Kevin Ni, Guha Balakrishnan. <span class="muted">MIDL '23</span><br />
-            <a href="https://arxiv.org/abs/2305.00147" class="secondary">PDF</a>
-          </li>
-          <li>
-            <strong>RareGAN: Generating Samples for Rare Classes</strong><br />
-            Zinan Lin, <em>Hao Liang</em>, Giulia Fanti, Vyas Sekar. <span class="muted">AAAI '22</span><br />
-            <a href="https://arxiv.org/pdf/2305.00149" class="secondary">PDF</a> · <a href="https://github.com/fjxmlzn/RareGAN" class="secondary">Code</a>
-          </li>
-          <li>
-            <strong>A Novel Framework for the Analysis and Design of Heterogeneous Federated Learning</strong><br />
-            Jianyu Wang, Qinghua Liu, <em>Hao Liang</em>, Gauri Joshi, H Vincent Poor. <span class="muted">IEEE Transactions on Signal Processing</span><br />
-            <a href="https://ieeexplore.ieee.org/abstract/document/9521822" class="secondary">PDF</a>
-          </li>
-          <li>
-            <strong>Controlled AutoEncoders to Generate Faces from Voices</strong><br />
-            <em>Hao Liang</em>, Lulan Yu, Guikang Xu, Bhiksha Raj, Rita Singh. <span class="muted">ISVC '20</span><br />
-            <a href="https://link.springer.com/chapter/10.1007/978-3-030-64556-4_37" class="secondary">PDF</a>
-          </li>
-          <li>
-            <strong>Tackling the objective inconsistency problem in heterogeneous federated optimization</strong><br />
-            Jianyu Wang, Qinghua Liu, <em>Hao Liang</em>, Gauri Joshi, H Vincent Poor. <span class="muted">NeurIPS '20</span><br />
-            <a href="https://proceedings.neurips.cc/paper/2020/hash/564127c03caab942e503ee6f810f54fd-Abstract.html" class="secondary">PDF</a> · <a href="https://github.com/JYWa/FedNova" class="secondary">Code</a>
-          </li>
-          <li>
-            <strong>Overlap local-SGD: An algorithmic approach to hide communication delays in distributed SGD</strong><br />
-            Jianyu Wang,  <em>Hao Liang</em>, Gauri Joshi. <span class="muted">ICASSP '20</span><br />
-            <a href="https://ieeexplore.ieee.org/abstract/document/9053834" class="secondary">PDF</a> 
-          </li>
-        </ol>
-      </section>
+  /* ---------- SELECTED WORK CARDS ---------- */
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  @media(max-width:900px){ .cards{grid-template-columns:1fr} }
+  .card{
+    border:1px solid var(--line-soft);border-radius:16px;overflow:hidden;background:var(--ink-2);
+    transition:border-color .3s,transform .3s;display:flex;flex-direction:column;
+  }
+  .card:hover{border-color:var(--accent);transform:translateY(-4px)}
+  /* placeholder thumb — replace background with your asset, e.g. background-image:url('assets/fastavatar.jpg') */
+  .thumb{
+    aspect-ratio:16/11;position:relative;overflow:hidden;
+    background:
+      radial-gradient(120% 120% at 30% 20%, rgba(198,242,78,.22), transparent 60%),
+      radial-gradient(120% 120% at 80% 90%, rgba(120,160,255,.18), transparent 55%),
+      #0d0e13;
+    background-size:cover;background-position:center;
+  }
+  .thumb canvas{width:100%;height:100%;display:block}
+  .thumb .tag{
+    position:absolute;top:12px;left:12px;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;
+    text-transform:uppercase;padding:5px 9px;border-radius:6px;background:rgba(11,12,15,.6);
+    backdrop-filter:blur(6px);color:var(--accent);border:1px solid var(--accent-dim);
+  }
+  .card-body{padding:20px 20px 22px;flex:1;display:flex;flex-direction:column}
+  .card-body h3{font-family:var(--serif);font-weight:420;font-size:21px;line-height:1.15;margin-bottom:8px}
+  .card-body p{font-size:14px;color:var(--muted);font-weight:300;margin-bottom:16px;flex:1}
+  .card-links{display:flex;flex-wrap:wrap;gap:14px;font-family:var(--mono);font-size:12px}
+  .card-links a{color:var(--muted);transition:color .2s}
+  .card-links a:hover{color:var(--accent)}
+  .card-links a::before{content:"→ ";color:var(--accent);opacity:.6}
 
-      <!-- Teaching -->
-      <section id="teaching">
-        <h2>Teaching</h2>
-        <ul>
-          <li><strong>ELEC 566: Introduction to Computer Vision</strong>, TA, Rice University · Fall 2024.</li>
-          <li><strong>ELEC 542: Neural Methods for Image Synthesis</strong>, TA, Rice University · Spring 2022.</li>
-          <li><strong>11-785: Introduction to Deep Learning</strong>, TA, Carnegie Mellon University · Fall 2019.</li>
-        </ul>
-      </section>
+  /* ---------- PUBLICATIONS LIST ---------- */
+  .pub{
+    display:grid;grid-template-columns:88px 1fr;gap:24px;padding:26px 0;
+    border-top:1px solid var(--line-soft);position:relative;transition:padding-left .3s;
+  }
+  .pub:last-child{border-bottom:1px solid var(--line-soft)}
+  .pub::before{
+    content:"";position:absolute;left:-24px;top:26px;bottom:26px;width:2px;background:var(--accent);
+    opacity:0;transition:opacity .3s;
+  }
+  .pub:hover{padding-left:14px}
+  .pub:hover::before{opacity:1}
+  .pub .venue{font-family:var(--mono);font-size:12px;color:var(--accent);letter-spacing:.02em;padding-top:3px}
+  .pub .venue .yr{display:block;color:var(--muted-2);margin-top:3px}
+  .pub h4{font-size:17.5px;font-weight:600;line-height:1.3;margin-bottom:6px;color:var(--text)}
+  .pub .auth{font-size:14px;color:var(--muted);font-weight:300;margin-bottom:10px}
+  .pub .auth .me{color:var(--text);font-style:italic;font-weight:500}
+  .pub .links{display:flex;flex-wrap:wrap;gap:14px;font-family:var(--mono);font-size:12px}
+  .pub .links a{color:var(--muted-2);transition:color .2s}
+  .pub .links a:hover{color:var(--accent)}
+  @media(max-width:620px){ .pub{grid-template-columns:1fr;gap:8px} .pub .venue{display:flex;gap:8px} .pub .venue .yr{margin-top:0} }
 
-      <!-- Contact -->
-      <section id="contact">
-        <h2>Let's Connect</h2>
-        <p class="muted" style="margin-bottom: 1.5rem;">
-          Feel free to reach out for collaboration opportunities, research discussions, or just to say hello.
-        </p>
-        <div class="social-links" style="justify-content: center; gap: 1.5rem;">
-          <a href="mailto:hl106@rice.edu" title="Email" style="width: 50px; height: 50px;">
-            <i class="fas fa-envelope" style="font-size: 22px;"></i>
+  /* ---------- TEACHING ---------- */
+  .teach-row{
+    display:grid;grid-template-columns:140px 1fr auto;gap:24px;align-items:center;
+    padding:22px 0;border-top:1px solid var(--line-soft);
+  }
+  .teach-row:last-child{border-bottom:1px solid var(--line-soft)}
+  .teach-row .term{font-family:var(--mono);font-size:12.5px;color:var(--accent)}
+  .teach-row .course b{font-size:16.5px;font-weight:600;color:var(--text)}
+  .teach-row .course span{display:block;font-size:14px;color:var(--muted);font-weight:300;margin-top:2px}
+  .teach-row .role{font-family:var(--mono);font-size:11.5px;color:var(--muted-2);letter-spacing:.08em;text-transform:uppercase}
+  @media(max-width:620px){ .teach-row{grid-template-columns:1fr;gap:6px} }
+
+  /* ---------- CONTACT ---------- */
+  #contact{padding-bottom:80px}
+  .connect{
+    font-family:var(--serif);font-weight:340;font-size:clamp(38px,7vw,86px);line-height:1;letter-spacing:-.02em;
+    margin-bottom:36px;
+  }
+  .connect .it{font-style:italic;font-weight:300;color:var(--accent)}
+  .connect a{transition:opacity .2s}
+  .connect a:hover{opacity:.7}
+  .social{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:40px}
+  footer{
+    border-top:1px solid var(--line-soft);padding:30px 0 50px;
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;
+    font-family:var(--mono);font-size:12px;color:var(--muted-2);letter-spacing:.02em;
+  }
+
+  /* ---------- REVEAL ANIM ---------- */
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
+  .reveal.in{opacity:1;transform:none}
+  .hero-stagger>*{opacity:0;transform:translateY(24px);animation:rise .95s cubic-bezier(.16,1,.3,1) forwards}
+  .hero-stagger>*:nth-child(1){animation-delay:.15s}
+  .hero-stagger>*:nth-child(2){animation-delay:.28s}
+  .hero-stagger>*:nth-child(3){animation-delay:.41s}
+  .hero-stagger>*:nth-child(4){animation-delay:.54s}
+  @keyframes rise{to{opacity:1;transform:none}}
+  @media(prefers-reduced-motion:reduce){
+    .reveal,.hero-stagger>*{opacity:1!important;transform:none!important;animation:none!important}
+    .scroll-hint{display:none}
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a class="brand" href="#top"><span class="dot"></span>HAO&nbsp;LIANG</a>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#work">Work</a>
+    <a href="#pubs">Publications</a>
+    <a href="#teaching">Teaching</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<header id="top">
+  <canvas id="cloud"></canvas>
+  <div class="wrap hero-grid">
+    <div class="hero-stagger">
+      <div class="eyebrow">ECE PhD Candidate · Rice University</div>
+      <h1 class="name">Hao&nbsp;<span class="it">Liang</span></h1>
+      <p class="tagline">Building <b>3D digital humans</b> — fast, faithful avatars from a single photo with <b>Gaussian Splatting</b> &amp; generative models.</p>
+      <div>
+        <div class="cta">
+          <a class="btn solid" href="mailto:hl106@rice.edu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
+            Email
           </a>
-          <a href="https://github.com/hliang2" title="GitHub" style="width: 50px; height: 50px;">
-            <i class="fab fa-github" style="font-size: 22px;"></i>
-          </a>
-          <a href="https://scholar.google.com/citations?user=9mdAaEEAAAAJ&hl=en" title="Google Scholar" style="width: 50px; height: 50px;">
-            <i class="fas fa-graduation-cap" style="font-size: 22px;"></i>
-          </a>
-          <a href="https://www.linkedin.com/in/hao-liang-5b5020198" title="LinkedIn" style="width: 50px; height: 50px;">
-            <i class="fab fa-linkedin" style="font-size: 22px;"></i>
-          </a>
+          <a class="btn" href="https://scholar.google.com/citations?user=9mdAaEEAAAAJ&hl=en" target="_blank" rel="noopener">Google Scholar</a>
+          <a class="btn" href="https://github.com/hliang2" target="_blank" rel="noopener">GitHub</a>
+          <a class="btn" href="https://hliang2.github.io/assets/CV.pdf" target="_blank" rel="noopener">CV ↗</a>
         </div>
-        <p class="muted" style="margin-top: 1rem;">
-          <i class="fas fa-map-marker-alt" style="display: inline; margin-right: 0.5rem;"></i>
-          Houston, TX
-        </p>
-      </section>
-    </main>
+        <div class="hero-meta">Houston, TX · currently research intern @ Apple Digital Human</div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint"><span>scroll</span><span class="ln"></span></div>
+</header>
 
-    <footer class="container">
-      <small class="muted">© 2025 Hao Liang · Built with Claude on GitHub Pages</small>
+<!-- ABOUT -->
+<section id="about">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-label"><span class="num">01</span> About</div>
+      <div class="sec-title">Practical systems that are <span class="it">simple, fast, fair &amp; reliable.</span></div>
+    </div>
+    <div class="about-grid">
+      <div class="bio reveal">
+        <p>I am an ECE PhD candidate at <a href="https://www.rice.edu/" target="_blank" rel="noopener">Rice University</a>, advised by <a href="https://www.guhabalakrishnan.com/" target="_blank" rel="noopener">Prof. Guha Balakrishnan</a>. Before Rice, I spent three wonderful years at <a href="https://www.cmu.edu/" target="_blank" rel="noopener">Carnegie Mellon University</a>, where I was fortunate to work closely with <a href="https://www.andrew.cmu.edu/user/gaurij/" target="_blank" rel="noopener">Prof. Gauri Joshi</a>, <a href="https://engineering.cmu.edu/directory/bios/ramakrishnan-bhiksha-raj.html" target="_blank" rel="noopener">Prof. Bhiksha Raj</a>, and <a href="https://gfanti.github.io/" target="_blank" rel="noopener">Prof. Giulia Fanti</a>. I did my undergraduate studies at UESTC.</p>
+        <p>My research focuses on <b style="color:var(--text);font-weight:600">generative modeling</b>, <b style="color:var(--text);font-weight:600">3D human reconstruction</b>, <b style="color:var(--text);font-weight:600">vision–language models</b>, and <b style="color:var(--text);font-weight:600">federated learning</b>. I like building practical systems that are simple, fast, fair, and reliable.</p>
+        <p>My research is supported by <a href="https://sra.samsung.com/" target="_blank" rel="noopener">Samsung Research America</a>. I am currently a research intern with the <a href="https://machinelearning.apple.com/" target="_blank" rel="noopener">Apple</a> Digital Human team.</p>
+      </div>
+      <div class="about-side reveal">
+        <img class="portrait" src="https://hliang2.github.io/assets/avatar.jpg" alt="Hao Liang">
+        <div class="affil">
+          <div class="k">Affiliation</div>
+          <div class="v"><b>Rice University</b> — ECE</div>
+          <div class="k">Advisor</div>
+          <div class="v"><b>Guha Balakrishnan</b></div>
+          <div class="k">Currently</div>
+          <div class="v">Research Intern, <b>Apple</b> Digital Human</div>
+          <div class="k">Previously</div>
+          <div class="v">CMU · Samsung Research America</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SELECTED WORK -->
+<section id="work">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-label"><span class="num">02</span> Selected Work</div>
+      <div class="sec-title">3D faces &amp; avatars, <span class="it">in the wild.</span></div>
+    </div>
+    <div class="cards">
+
+      <article class="card reveal">
+        <div class="thumb"><canvas class="mini" data-seed="1"></canvas><span class="tag">In submission</span></div>
+        <div class="card-body">
+          <h3>FastAvatar</h3>
+          <p>Instant 3D Gaussian Splatting avatars from a single unconstrained pose — predicting ~600K structured Gaussian parameters in one shot.</p>
+          <div class="card-links">
+            <a href="https://hliang2.github.io/FastAvatar/" target="_blank" rel="noopener">Project</a>
+            <a href="https://arxiv.org/pdf/2508.18389" target="_blank" rel="noopener">PDF</a>
+            <a href="https://github.com/hliang2/FastAvatar" target="_blank" rel="noopener">Code</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card reveal">
+        <div class="thumb"><canvas class="mini" data-seed="2"></canvas><span class="tag">In submission</span></div>
+        <div class="card-body">
+          <h3>SplatShot</h3>
+          <p>3D face avatar generation from a single unconstrained photo — robust splat reconstruction beyond studio capture.</p>
+          <div class="card-links">
+            <a href="https://github.com/hliang2/SplatShot" target="_blank" rel="noopener">Code</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card reveal">
+        <div class="thumb"><canvas class="mini" data-seed="3"></canvas><span class="tag">In submission</span></div>
+        <div class="card-body">
+          <h3>CelebA-3D</h3>
+          <p>A large-scale, in-the-wild 3D face dataset for learning identity-faithful avatar reconstruction at scale.</p>
+          <div class="card-links">
+            <a href="https://hliang2.github.io/celeba-3d/" target="_blank" rel="noopener">Project</a>
+            <a href="https://github.com/hliang2/celeba-3d" target="_blank" rel="noopener">Code</a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- PUBLICATIONS -->
+<section id="pubs">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-label"><span class="num">03</span> Publications</div>
+      <div class="sec-title">Full <span class="it">record.</span></div>
+    </div>
+    <div class="pub-list">
+
+      <div class="pub reveal">
+        <div class="venue">subm.<span class="yr">2025</span></div>
+        <div>
+          <h4>SplatShot: 3D Face Avatar Generation from a Single Unconstrained Photo</h4>
+          <div class="auth"><span class="me">Hao Liang</span>, Zhixuan Ge, Soumendu Majee, Joanna Li, Ashok Veeraraghavan, Guha Balakrishnan</div>
+          <div class="links"><a href="https://github.com/hliang2/SplatShot" target="_blank" rel="noopener">Code</a></div>
+        </div>
+      </div>
+
+      <div class="pub reveal">
+        <div class="venue">subm.<span class="yr">2025</span></div>
+        <div>
+          <h4>CelebA-3D: A Large-Scale 3D In-the-Wild Face Dataset</h4>
+          <div class="auth"><span class="me">Hao Liang</span>, Guha Balakrishnan</div>
+          <div class="links">
+            <a href="https://github.com/hliang2/celeba-3d" target="_blank" rel="noopener">Code</a>
+            <a href="https://hliang2.github.io/celeba-3d/" target="_blank" rel="noopener">Project</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="pub reveal">
+        <div class="venue">subm.<span class="yr">2025</span></div>
+        <div>
+          <h4>FastAvatar: Instant 3D Gaussian Splatting for Faces from Single Unconstrained Poses</h4>
+          <div class="auth"><span class="me">Hao Liang</span>, Zhixuan Ge, Ashish Tiwari, Soumendu Majee, G.M. Dilshan Godaliyadda, Ashok Veeraraghavan, Guha Balakrishnan</div>
+          <div class="links">
+            <a href="https://arxiv.org/pdf/2508.18389" target="_blank" rel="noopener">PDF</a>
+            <a href="https://github.com/hliang2/FastAvatar" target="_blank" rel="noopener">Code</a>
+            <a href="https://hliang2.github.io/FastAvatar/" target="_blank" rel="noopener">Project</a>
+            <a href="https://x.com/janusch_patas/status/1960589930620707201" target="_blank" rel="noopener">Twitter</a>
+            <a href="https://zhuanlan.zhihu.com/p/1944046184273535746" target="_blank" rel="noopener">Zhihu</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="pub reveal">
+        <div class="venue">WACV<span class="yr">2024</span></div>
+        <div>
+          <h4>Linking Convolutional Kernel Size to Generalization Bias in Face Analysis CNNs</h4>
+          <div class="auth"><span class="me">Hao Liang</span>, Josue Ortega Caro, Vikram Maheshri, Ankit B. Patel, Guha Balakrishnan</div>
+          <div class="links"><a href="https://openaccess.thecvf.com/content/WACV2024/papers/Liang_Linking_Convolutional_Kernel_Size_to_Generalization_Bias_in_Face_Analysis_WACV_2024_paper.pdf" target="_blank" rel="noopener">PDF</a></div>
+        </div>
+      </div>
+
+      <div class="pub reveal">
+        <div class="venue">ICCV<span class="yr">2023</span></div>
+        <div>
+          <h4>Benchmarking Algorithmic Bias in Face Recognition: An Experimental Approach Using Synthetic Faces and Human Evaluation</h4>
+          <div class="auth"><span class="me">Hao Liang</span>, Pietro Perona, Guha Balakrishnan</div>
+          <div class="links">
+            <a href="https://openaccess.thecvf.com/content/ICCV2023/papers/Liang_Benchmarking_Algorithmic_Bias_in_Face_Recognition_An_Experimental_Approach_Using_ICCV_2023_paper.pdf" target="_blank" rel="noopener">PDF</a>
+            <a href="https://hliang2.github.io/BenchmarkingReco/" target="_blank" rel="noopener">Project</a>
+            <a href="https://github.com/hliang2/BenchmarkingReco" target="_blank" rel="noopener">Code</a>
+            <a href="https://rice.app.box.com/s/0t7dtfurh8jf80mhq3f7s8nbya2g58w9" target="_blank" rel="noopener">Dataset</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="pub reveal">
+        <div class="venue">arXiv<span class="yr">2024</span></div>
+        <div>
+          <h4>X-ray Recognition: Patient Identification from X-rays using a Contrastive Objective</h4>
+          <div class="auth"><span class="me">Hao Liang</span>, Kevin Ni, Guha Balakrishnan</div>
+          <div class="links"><a href="https://arxiv.org/pdf/2305.00149" target="_blank" rel="noopener">PDF</a></div>
+        </div>
+      </div>
+
+      <div class="pub reveal">
+        <div class="venue">MIDL<span class="yr">2023</span></div>
+        <div>
+          <h4>Visualizing Chest X-ray Dataset Biases using GANs</h4>
+          <div class="auth"><span class="me">Hao Liang</span>, Kevin Ni, Guha Balakrishnan</div>
+          <div class="links"><a href="https://arxiv.org/abs/2305.00147" target="_blank" rel="noopener">PDF</a></div>
+        </div>
+      </div>
+
+      <div class="pub reveal">
+        <div class="venue">AAAI<span class="yr">2022</span></div>
+        <div>
+          <h4>RareGAN: Generating Samples for Rare Classes</h4>
+          <div class="auth">Zinan Lin, <span class="me">Hao Liang</span>, Giulia Fanti, Vyas Sekar</div>
+          <div class="links"><a href="https://arxiv.org/abs/2006.10260" target="_blank" rel="noopener">PDF</a> <a href="https://github.com/fjxmlzn/RareGAN" target="_blank" rel="noopener">Code</a></div>
+        </div>
+      </div>
+
+      <div class="pub reveal">
+        <div class="venue">IEEE TSP<span class="yr">2021</span></div>
+        <div>
+          <h4>A Novel Framework for the Analysis and Design of Heterogeneous Federated Learning</h4>
+          <div class="auth">Jianyu Wang, Qinghua Liu, <span class="me">Hao Liang</span>, Gauri Joshi, H. Vincent Poor</div>
+          <div class="links"><a href="https://ieeexplore.ieee.org/abstract/document/9521822" target="_blank" rel="noopener">PDF</a></div>
+        </div>
+      </div>
+
+      <div class="pub reveal">
+        <div class="venue">NeurIPS<span class="yr">2020</span></div>
+        <div>
+          <h4>Tackling the Objective Inconsistency Problem in Heterogeneous Federated Optimization</h4>
+          <div class="auth">Jianyu Wang, Qinghua Liu, <span class="me">Hao Liang</span>, Gauri Joshi, H. Vincent Poor</div>
+          <div class="links"><a href="https://proceedings.neurips.cc/paper/2020/hash/564127c03caab942e503ee6f810f54fd-Abstract.html" target="_blank" rel="noopener">PDF</a> <a href="https://github.com/JYWa/FedNova" target="_blank" rel="noopener">Code</a></div>
+        </div>
+      </div>
+
+      <div class="pub reveal">
+        <div class="venue">ISVC<span class="yr">2020</span></div>
+        <div>
+          <h4>Controlled AutoEncoders to Generate Faces from Voices</h4>
+          <div class="auth"><span class="me">Hao Liang</span>, Lulan Yu, Guikang Xu, Bhiksha Raj, Rita Singh</div>
+          <div class="links"><a href="https://link.springer.com/chapter/10.1007/978-3-030-64556-4_37" target="_blank" rel="noopener">PDF</a></div>
+        </div>
+      </div>
+
+      <div class="pub reveal">
+        <div class="venue">ICASSP<span class="yr">2020</span></div>
+        <div>
+          <h4>Overlap Local-SGD: An Algorithmic Approach to Hide Communication Delays in Distributed SGD</h4>
+          <div class="auth">Jianyu Wang, <span class="me">Hao Liang</span>, Gauri Joshi</div>
+          <div class="links"><a href="https://ieeexplore.ieee.org/abstract/document/9053834" target="_blank" rel="noopener">PDF</a></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- TEACHING -->
+<section id="teaching">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-label"><span class="num">04</span> Teaching</div>
+      <div class="sec-title">In the <span class="it">classroom.</span></div>
+    </div>
+    <div class="reveal">
+      <div class="teach-row">
+        <div class="term">Fall 2024</div>
+        <div class="course"><b>ELEC 566 — Introduction to Computer Vision</b><span>Rice University</span></div>
+        <div class="role">Teaching Assistant</div>
+      </div>
+      <div class="teach-row">
+        <div class="term">Spring 2022</div>
+        <div class="course"><b>ELEC 542 — Neural Methods for Image Synthesis</b><span>Rice University</span></div>
+        <div class="role">Teaching Assistant</div>
+      </div>
+      <div class="teach-row">
+        <div class="term">Fall 2019</div>
+        <div class="course"><b>11-785 — Introduction to Deep Learning</b><span>Carnegie Mellon University</span></div>
+        <div class="role">Teaching Assistant</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-label"><span class="num">05</span> Contact</div>
+      <div class="sec-title"></div>
+    </div>
+    <div class="connect reveal">Let's <span class="it">connect</span> →<br><a href="mailto:hl106@rice.edu">hl106@rice.edu</a></div>
+    <div class="social reveal">
+      <a class="btn" href="mailto:hl106@rice.edu">Email</a>
+      <a class="btn" href="https://github.com/hliang2" target="_blank" rel="noopener">GitHub</a>
+      <a class="btn" href="https://scholar.google.com/citations?user=9mdAaEEAAAAJ&hl=en" target="_blank" rel="noopener">Google Scholar</a>
+      <a class="btn" href="https://www.linkedin.com/in/hao-liang-5b5020198" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+    <footer>
+      <span>Houston, TX · Rice University</span>
+      <span>© 2025 Hao Liang — Built on GitHub Pages</span>
     </footer>
+  </div>
+</section>
 
-    <script>
-      // Dark mode toggle with persistence
-      const root = document.documentElement;
-      const btn = document.getElementById('themeToggle');
-      const saved = localStorage.getItem('theme');
-      if (saved) root.setAttribute('data-theme', saved);
-      function setIcon() {
-        btn.textContent = (root.getAttribute('data-theme') === 'dark') ? '☀️' : '🌙';
+<script>
+  // ---- nav scroll state ----
+  const nav=document.getElementById('nav');
+  addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>40),{passive:true});
+
+  // ---- reveal on scroll ----
+  const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+  // ---- HERO: rotating Gaussian point cloud (sphere shell) ----
+  (function(){
+    const cv=document.getElementById('cloud'),ctx=cv.getContext('2d');
+    let W,H,DPR,pts=[],mx=0,my=0,tx=0,ty=0;
+    const N=1500;
+    // fibonacci sphere
+    for(let i=0;i<N;i++){
+      const y=1-(i/(N-1))*2, r=Math.sqrt(1-y*y), th=i*2.399963;
+      const jitter=0.93+Math.random()*0.14;
+      pts.push({x:Math.cos(th)*r*jitter,y:y*jitter,z:Math.sin(th)*r*jitter,s:Math.random()});
+    }
+    function size(){DPR=Math.min(devicePixelRatio||1,2);W=cv.clientWidth;H=cv.clientHeight;cv.width=W*DPR;cv.height=H*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);}
+    addEventListener('resize',size);size();
+    addEventListener('pointermove',e=>{mx=(e.clientX/innerWidth-.5);my=(e.clientY/innerHeight-.5);});
+    let a=0;
+    function frame(){
+      tx+=(mx-tx)*.04;ty+=(my-ty)*.04;
+      a+=reduce?0:0.0026;
+      ctx.clearRect(0,0,W,H);
+      const cx=W*0.5,cy=H*0.5,R=Math.min(W,H)*0.42;
+      const ay=a+tx*0.8, ax=ty*0.6;
+      const cosY=Math.cos(ay),sinY=Math.sin(ay),cosX=Math.cos(ax),sinX=Math.sin(ax);
+      const proj=pts.map(p=>{
+        let x=p.x*cosY-p.z*sinY, z=p.x*sinY+p.z*cosY, y=p.y;
+        let y2=y*cosX-z*sinX; z=y*sinX+z*cosX; y=y2;
+        const f=2.6,sc=f/(f+z);
+        return {sx:cx+x*R*sc,sy:cy+y*R*sc,z,sc,s:p.s};
+      }).sort((m,n)=>m.z-n.z);
+      for(const q of proj){
+        const depth=(q.z+1)/2;              // 0 far .. 1 near
+        const alpha=0.12+depth*0.7;
+        const rad=(0.5+q.sc*1.7)*(0.6+q.s*0.8);
+        // accent tint for the nearest points
+        if(depth>0.78){ctx.fillStyle='rgba(198,242,78,'+(alpha*0.95)+')';}
+        else{ctx.fillStyle='rgba(236,231,223,'+(alpha*0.6)+')';}
+        ctx.beginPath();ctx.arc(q.sx,q.sy,rad,0,6.283);ctx.fill();
       }
-      setIcon();
-      btn.addEventListener('click', () => {
-        const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-        root.setAttribute('data-theme', next);
-        localStorage.setItem('theme', next);
-        setIcon();
-      });
-    </script>
-  </body>
+      requestAnimationFrame(frame);
+    }
+    frame();
+  })();
+
+  // ---- card mini point-fields (static-ish placeholders) ----
+  document.querySelectorAll('canvas.mini').forEach(cv=>{
+    const ctx=cv.getContext('2d');let W,H,DPR;
+    const seed=+cv.dataset.seed; let r=seed*9301+49297;
+    const rnd=()=>{r=(r*9301+49297)%233280;return r/233280;};
+    const P=[];for(let i=0;i<260;i++)P.push({x:rnd(),y:rnd(),s:rnd()});
+    function sz(){DPR=Math.min(devicePixelRatio||1,2);W=cv.clientWidth;H=cv.clientHeight;cv.width=W*DPR;cv.height=H*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);draw(0);}
+    let t=0;
+    function draw(time){
+      ctx.clearRect(0,0,W,H);
+      for(const p of P){
+        const px=p.x*W, py=p.y*H+Math.sin(time*0.0006+p.x*8)*4;
+        const a=0.10+p.s*0.5;
+        ctx.fillStyle=p.s>0.82?'rgba(198,242,78,'+a+')':'rgba(236,231,223,'+(a*0.7)+')';
+        ctx.beginPath();ctx.arc(px,py,0.6+p.s*1.6,0,6.283);ctx.fill();
+      }
+    }
+    addEventListener('resize',sz);sz();
+    if(!reduce){(function loop(ts){draw(ts);requestAnimationFrame(loop);})(0);}
+  });
+</script>
+</body>
 </html>
